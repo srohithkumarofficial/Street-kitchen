@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Primary Meta Tags -->
+  <title>Street Kitchen | Charcoal Grills, Shawarma & Burgers (Kolathur, Chennai)</title>
+  <meta name="title" content="Street Kitchen | Charcoal Grills, Shawarma & Burgers (Kolathur, Chennai)">
+  <meta name="description" content="Experience Chennai's premier dark ambient dining at Street Kitchen, Kolathur. Authentic 500°F live charcoal shawarmas, midnight smashed brioche burgers, sizzling BBQ, and direct WhatsApp ordering.">
+  <meta name="keywords" content="Street Kitchen Chennai, Street Kitchen Kolathur, best shawarma in Chennai, charcoal grill restaurant, smash burger Chennai, late night food Kolathur, dark aesthetic restaurant">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="Street Kitchen">
+  <link rel="canonical" href="https://streetkitchenchennai.com/">
+
+  <!-- Open Graph / WhatsApp Preview -->
+  <meta property="og:type" content="restaurant.restaurant">
+  <meta property="og:url" content="https://streetkitchenchennai.com/">
+  <meta property="og:title" content="Street Kitchen | Dark Ambience • Charcoal Grills • Chennai">
+  <meta property="og:description" content="try it you'll like it. Live open-flame grills, midnight smash burgers, and dark aesthetic dining in Kolathur, Chennai.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Street Kitchen | Dark Ambience • Charcoal Grills">
+  <meta property="twitter:description" content="Authentic open-flame grills & midnight feasts in Kolathur, Chennai. Order easily on WhatsApp.">
+  <meta property="twitter:image" content="logo.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <!-- JSON-LD Structured Data Schema for Local Restaurant SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Street Kitchen",
+    "image": "logo.png",
+    "@id": "https://streetkitchenchennai.com/",
+    "url": "https://streetkitchenchennai.com/",
+    "telephone": "+919876543210",
+    "priceRange": "₹₹",
+    "servesCuisine": [
+      "Barbecue",
+      "Shawarma",
+      "Burgers",
+      "Street Food",
+      "Chinese Wok",
+      "Late Night Food"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "200 Feet Radial Road / Kolathur Main Rd",
+      "addressLocality": "Kolathur, Chennai",
+      "addressRegion": "Tamil Nadu",
+      "postalCode": "600099",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 13.1190411,
+      "longitude": 80.2260011
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "12:00",
+        "closes": "00:30"
+      }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "1250"
+    },
+    "hasMenu": "https://streetkitchenchennai.com/#menu",
+    "menu": "https://streetkitchenchennai.com/#menu",
+    "acceptsReservations": "True"
+  }
+  </script>
+
+  <!-- Leaflet CSS for Dark Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Ambient Light Mesh -->
+  <div class="ambient-glow-mesh" aria-hidden="true">
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+  </div>
+
+  <!-- ==========================================================================
+       1. NAVIGATION HEADER & MOBILE HAMBURGER
+       ========================================================================== -->
+  <header class="site-header" id="site-header">
+    <div class="nav-container">
+      <a href="#hero" class="logo-link" aria-label="Street Kitchen Home">
+        <div class="logo-badge-img">
+          <img src="logo.png" alt="Street Kitchen Logo" class="nav-logo-thumb">
+        </div>
+        <div class="logo-text-group">
+          <span class="brand-title">Street Kitchen</span>
+          <span class="brand-tagline">try it you'll like it</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#hero" class="nav-link active">Home</a></li>
+          <li><a href="#menu" class="nav-link">Menu & Tray</a></li>
+          <li><a href="#story" class="nav-link">Ambience</a></li>
+          <li><a href="#location" class="nav-link">Location & Map</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Tray/Cart Button (WhatsApp Style) -->
+        <button id="cart-toggle-btn" class="cart-toggle-btn" aria-label="View Food Tray">
+          <div class="cart-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            <span class="cart-count-badge" id="nav-cart-count">0</span>
+          </div>
+          <span class="cart-label">Tray</span>
+        </button>
+
+        <!-- Book Table CTA (Desktop) -->
+        <button class="header-cta-btn open-reservation-btn desktop-cta">
+          <span>Book Table</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="mobile-hamburger-btn" id="mobile-hamburger-btn" aria-label="Open Navigation Menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-menu-drawer" id="mobile-menu-drawer" aria-label="Mobile Menu">
+    <div class="drawer-header">
+      <div class="logo-link">
+        <div class="logo-badge-img">
+          <img src="logo.png" alt="Street Kitchen" class="nav-logo-thumb">
+        </div>
+        <div class="logo-text-group">
+          <span class="brand-title">Street Kitchen</span>
+          <span class="brand-tagline">try it you'll like it</span>
+        </div>
+      </div>
+      <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <ul class="mobile-nav-links">
+      <li><a href="#hero" class="mobile-nav-link">🔥 Home</a></li>
+      <li><a href="#menu" class="mobile-nav-link">🌯 Menu & Tray</a></li>
+      <li><a href="#story" class="mobile-nav-link">✨ Dark Ambience</a></li>
+      <li><a href="#location" class="mobile-nav-link">📍 Location & Map</a></li>
+    </ul>
+
+    <div class="drawer-footer">
+      <button class="header-cta-btn open-reservation-btn" style="width: 100%; justify-content: center;">
+        <span>Reserve a VIP Table</span>
+      </button>
+      <a href="https://wa.me/919876543210" class="btn-whatsapp-checkout" style="margin-top: 1rem;" target="_blank" rel="noopener noreferrer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.04 2C6.495 2 2 6.495 2 12.04c0 1.93.548 3.737 1.504 5.275L2 22l4.836-1.464a9.988 9.988 0 0 0 5.204 1.504c5.545 0 10.04-4.495 10.04-10.04C22.08 6.495 17.585 2 12.04 2z"/>
+        </svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+  </div>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <!-- ==========================================================================
+       2. HERO SECTION WITH 3D SHOWCASE
+       ========================================================================== -->
+  <main>
+    <section class="hero-section" id="hero">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge-pill">
+            <span class="live-pulse-dot"></span>
+            <span>Open Daily • 12:00 PM – 12:30 AM</span>
+          </div>
+
+          <h1 class="hero-headline">
+            Dark Ambience. <br>
+            <span class="gradient-text">Blazing Flavors.</span>
+          </h1>
+
+          <p class="hero-description">
+            Step into Chennai's premier underground culinary destination in Kolathur. Savor 500°F live charcoal shawarmas, midnight smash burgers, and flame-tossed wok noodles crafted with artisan spices.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="#menu" class="btn-primary-glow">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 3h18v18H3z M3 9h18 M9 21V9"/></svg>
+              Explore Menu
+            </a>
+            <button class="btn-secondary-glass open-reservation-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Reserve Table
+            </button>
+          </div>
+
+          <div class="hero-highlights-strip">
+            <div class="highlight-stat-item">
+              <h3>4.8<span>★</span></h3>
+              <p>Google (1.2K+ Reviews)</p>
+            </div>
+            <div class="highlight-stat-item">
+              <h3>500<span>°F</span></h3>
+              <p>Natural Charcoal Flame</p>
+            </div>
+            <div class="highlight-stat-item">
+              <h3>20<span>m</span></h3>
+              <p>Fast Hot Delivery</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Interactive Three.js Stage -->
+        <div class="hero-3d-stage">
+          <div class="canvas-hint-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8M8 12h8"/></svg>
+            Interactive 3D • Move cursor to orbit
+          </div>
+
+          <!-- WebGL Three.js Container -->
+          <div id="three-canvas-container"></div>
+
+          <!-- 3D Model Switcher Tabs -->
+          <div class="model-switcher-tabs" role="tablist" aria-label="3D Food Models">
+            <button class="model-tab-btn active" data-model-index="0" role="tab" aria-selected="true">🌯 Shawarma</button>
+            <button class="model-tab-btn" data-model-index="1" role="tab" aria-selected="false">🍔 Smash Burger</button>
+            <button class="model-tab-btn" data-model-index="2" role="tab" aria-selected="false">🍜 Wok Noodles</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         3. CURATED MENU SECTION (SMOOTH SCROLL REVEAL)
+         ========================================================================== -->
+    <section class="menu-section" id="menu">
+      <div class="section-container">
+        <div class="section-header-center scroll-reveal">
+          <span class="section-tag">Fire-Forged Specialties</span>
+          <h2 class="section-title">The Street Menu</h2>
+          <p class="section-desc">
+            Handcrafted street delicacies cooked over live coals, infused with secret spices, and served sizzling hot.
+          </p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="menu-controls scroll-reveal" role="tablist">
+          <button class="category-filter-btn active" data-category="all">✨ All Dishes</button>
+          <button class="category-filter-btn" data-category="shawarma">🌯 Shawarma & Rolls</button>
+          <button class="category-filter-btn" data-category="grills">🍢 Charcoal Grills</button>
+          <button class="category-filter-btn" data-category="burgers">🍔 Smash Burgers</button>
+          <button class="category-filter-btn" data-category="wok">🥢 Wok Hei & Momos</button>
+          <button class="category-filter-btn" data-category="drinks">🍹 Shakes & Mojitos</button>
+        </div>
+
+        <!-- Dish Cards Grid -->
+        <div class="menu-cards-grid" id="menu-cards-grid">
+          <!-- Dynamically populated via menu-data.js & app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         4. ATMOSPHERE & CRAFT STORY
+         ========================================================================== -->
+    <section class="story-section" id="story">
+      <div class="section-container">
+        <div class="section-header-center scroll-reveal">
+          <span class="section-tag">The Street Kitchen Standard</span>
+          <h2 class="section-title">Dark Mood. Uncompromised Quality.</h2>
+          <p class="section-desc">
+            We reimagined street food dining into a multi-sensory dark ambience experience without cutting corners on taste or hygiene.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-box-glass scroll-reveal">
+            <div class="feature-icon-bubble">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c-.5 2-2 4-2 6 0 2.5 1.5 4 1.5 6 0 1.5-1 3-2.5 3.5C7.5 18 6 16.5 6 14.5c0-3 3-5 3-8-4 2-7 6.5-7 11.5 0 6.6 5.4 12 12 12s12-5.4 12-12c0-7.5-6-11-7-16-1 2-2 4-4 4-1.5 0-2.5-1-3-2z"/></svg>
+            </div>
+            <h3>100% Natural Charcoal</h3>
+            <p>We grill using authentic hardwood coal that locks juices in while giving that irresistible deep smoky crust.</p>
+          </div>
+
+          <div class="feature-box-glass scroll-reveal">
+            <div class="feature-icon-bubble">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
+            <h3>24 Secret In-House Spices</h3>
+            <p>Every single marination and dip is brewed from scratch using whole spices toasted in small daily batches.</p>
+          </div>
+
+          <div class="feature-box-glass scroll-reveal">
+            <div class="feature-icon-bubble">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </div>
+            <h3>Underground Dark Vibe</h3>
+            <p>Industrial textures, glowing neon accents, and curated beats make every dinner feel like a nocturnal feast.</p>
+          </div>
+
+          <div class="feature-box-glass scroll-reveal">
+            <div class="feature-icon-bubble">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <h3>Midnight Cravings Hub</h3>
+            <p>Craving late-night skewers or smash burgers? Our live kitchen runs blazing hot until 12:30 AM every night.</p>
+          </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="testimonials-grid">
+          <div class="testimonial-card scroll-reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"The Smoked Charcoal Shawarma here is easily in the top 3 in entire Chennai! The smoky coal aroma penetrates the meat perfectly. The dark aesthetic vibe is next level."</p>
+            <div class="testi-author">
+              <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=120&q=80" alt="Vigneshwaran R.">
+              <div>
+                <h4>Vigneshwaran R.</h4>
+                <span>Local Food Critic</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card scroll-reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"Unreal Midnight Beast smash burger and sizzling momos. The ambience inside Street Kitchen makes it feel like an upscale underground Tokyo street diner."</p>
+            <div class="testi-author">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80" alt="Pooja Sundaram">
+              <div>
+                <h4>Pooja Sundaram</h4>
+                <span>Chennai Foodie Club</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-card scroll-reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"Their quick WhatsApp order feature is super convenient. Hot delivery under 30 minutes in Kolathur and the packaging preserves the crispiness."</p>
+            <div class="testi-author">
+              <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=120&q=80" alt="Arun Karthik">
+              <div>
+                <h4>Arun Karthik</h4>
+                <span>Regular Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         5. INTERACTIVE LEAFLET DARK MAP & LOCATION
+         ========================================================================== -->
+    <section class="location-section" id="location">
+      <div class="section-container">
+        <div class="section-header-center scroll-reveal">
+          <span class="section-tag">Find Us in Kolathur</span>
+          <h2 class="section-title">Visit Street Kitchen</h2>
+          <p class="section-desc">
+            Located on the buzzing corridor of Kolathur, Chennai. Drop by for dine-in or navigate directly.
+          </p>
+        </div>
+
+        <div class="location-wrapper scroll-reveal">
+          <!-- Leaflet Map Container -->
+          <div class="map-container-wrap">
+            <div id="leaflet-map" role="application" aria-label="Street Kitchen Location Map"></div>
+          </div>
+
+          <!-- Location Information Panel -->
+          <div class="location-info-panel">
+            <h3>Street Kitchen</h3>
+            <p class="address-text">
+              200 Feet Radial Road / Kolathur Main Rd, Kolathur, Chennai, Tamil Nadu 600099
+            </p>
+
+            <div class="loc-meta-items">
+              <div class="loc-meta-item">
+                <div class="loc-icon-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div>
+                  <h4>Operating Hours</h4>
+                  <p>Daily: 12:00 PM – 12:30 AM (Midnight Cravings)</p>
+                </div>
+              </div>
+
+              <div class="loc-meta-item">
+                <div class="loc-icon-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </div>
+                <div>
+                  <h4>Direct Phone & WhatsApp</h4>
+                  <p>+91 98765 43210</p>
+                </div>
+              </div>
+
+              <div class="loc-meta-item">
+                <div class="loc-icon-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+                </div>
+                <div>
+                  <h4>Coordinates</h4>
+                  <p>13.1190° N, 80.2260° E (Kolathur)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="location-actions-group">
+              <a href="https://www.google.com/maps/place/Street+Kitchen/@13.1190463,80.2234262,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5264513bce7f41:0xc419b61d4429b09a!8m2!3d13.1190411!4d80.2260011!16s%2Fg%2F11g7zw7jft" target="_blank" class="btn-primary-glow" rel="noopener noreferrer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                Get Directions
+              </a>
+              <a href="tel:+919876543210" class="btn-secondary-glass">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                Call Kitchen
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       6. FLOATING WHATSAPP TRAY BOTTOM BAR (NON-OVERLAPPING)
+       ========================================================================== -->
+  <aside class="floating-tray-bottom-bar" id="floating-tray-bar" aria-label="Tray Summary Bar">
+    <div class="tray-bar-content">
+      <div class="tray-bar-info">
+        <div class="tray-bar-badge" id="tray-bar-count">0 ITEMS</div>
+        <div class="tray-bar-total">Tray Total: <span id="tray-bar-subtotal">₹0</span></div>
+      </div>
+      <button class="btn-tray-view-checkout" id="btn-tray-bar-open">
+        <span>View Tray & Order</span>
+        <!-- Authentic WhatsApp Icon inside Button -->
+        <svg class="wa-svg-icon" viewBox="0 0 32 32" width="20" height="20">
+          <path fill="#25D366" d="M16 2.5C8.544 2.5 2.5 8.544 2.5 16c0 2.457.653 4.764 1.796 6.757L2.5 29.5l7.003-1.745A13.435 13.435 0 0 0 16 29.5c7.456 0 13.5-6.044 13.5-13.5S23.456 2.5 16 2.5z"/>
+          <path fill="#FFFFFF" d="M21.78 19.344c-.313-.156-1.85-.913-2.138-1.018-.287-.104-.496-.156-.704.156-.209.313-.809 1.018-.992 1.227-.183.209-.365.235-.678.078-.313-.156-1.32-.486-2.515-1.552-.93-.83-1.558-1.854-1.741-2.167-.183-.313-.02-.482.137-.638.141-.14.313-.365.47-.548.156-.183.209-.313.313-.522.104-.209.052-.391-.026-.548-.078-.156-.704-1.7-.965-2.327-.253-.61-.51-.527-.704-.536-.182-.01-.391-.01-.6-.01-.209 0-.548.078-.835.391-.287.313-1.096 1.072-1.096 2.614 0 1.542 1.122 3.032 1.278 3.241.156.209 2.209 3.374 5.352 4.733.748.323 1.332.517 1.787.662.751.24 1.435.206 1.975.125.602-.09 1.85-.757 2.112-1.488.261-.73.261-1.356.183-1.488-.078-.131-.287-.209-.6-.365z"/>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       7. CART DRAWER & WHATSAPP CHECKOUT MODAL
+       ========================================================================== -->
+  <div class="cart-drawer-backdrop" id="cart-drawer-backdrop">
+    <div class="cart-drawer">
+      <div class="cart-drawer-header">
+        <h3>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          Your Food Tray
+        </h3>
+        <button class="cart-close-btn" id="cart-close-btn" aria-label="Close Tray">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="cart-items-container" id="cart-items-container">
+        <!-- Dynamically rendered via app.js -->
+      </div>
+
+      <div class="cart-drawer-footer">
+        <div class="cart-bill-summary">
+          <div class="bill-row">
+            <span>Subtotal</span>
+            <span id="cart-subtotal-val">₹0</span>
+          </div>
+          <div class="bill-row">
+            <span>Packaging & Heat Seal</span>
+            <span>₹20</span>
+          </div>
+          <div class="bill-row total">
+            <span>Grand Total</span>
+            <span id="cart-total-val">₹0</span>
+          </div>
+        </div>
+
+        <button class="btn-whatsapp-checkout" id="cart-checkout-btn">
+          <!-- Authentic Official WhatsApp Logo -->
+          <svg class="wa-svg-icon" viewBox="0 0 32 32" width="22" height="22">
+            <path fill="#25D366" d="M16 2.5C8.544 2.5 2.5 8.544 2.5 16c0 2.457.653 4.764 1.796 6.757L2.5 29.5l7.003-1.745A13.435 13.435 0 0 0 16 29.5c7.456 0 13.5-6.044 13.5-13.5S23.456 2.5 16 2.5z"/>
+            <path fill="#FFFFFF" d="M21.78 19.344c-.313-.156-1.85-.913-2.138-1.018-.287-.104-.496-.156-.704.156-.209.313-.809 1.018-.992 1.227-.183.209-.365.235-.678.078-.313-.156-1.32-.486-2.515-1.552-.93-.83-1.558-1.854-1.741-2.167-.183-.313-.02-.482.137-.638.141-.14.313-.365.47-.548.156-.183.209-.313.313-.522.104-.209.052-.391-.026-.548-.078-.156-.704-1.7-.965-2.327-.253-.61-.51-.527-.704-.536-.182-.01-.391-.01-.6-.01-.209 0-.548.078-.835.391-.287.313-1.096 1.072-1.096 2.614 0 1.542 1.122 3.032 1.278 3.241.156.209 2.209 3.374 5.352 4.733.748.323 1.332.517 1.787.662.751.24 1.435.206 1.975.125.602-.09 1.85-.757 2.112-1.488.261-.73.261-1.356.183-1.488-.078-.131-.287-.209-.6-.365z"/>
+          </svg>
+          Order via WhatsApp (Instant Bill)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       8. TABLE RESERVATION MODAL
+       ========================================================================== -->
+  <div class="reservation-modal-backdrop" id="reservation-modal-backdrop">
+    <div class="reservation-card-modal">
+      <button class="modal-close-icon" id="reservation-close-btn" aria-label="Close Reservation Modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <span class="section-tag">VIP Dining</span>
+        <h3 style="font-family: var(--font-display); font-size: 2.2rem; color: #fff; letter-spacing: 1px;">Reserve a Table</h3>
+        <p style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.65);">Guarantee your spot in the dark ambient dining lounge</p>
+      </div>
+
+      <form id="reservation-form">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="res-name">Full Name</label>
+            <input type="text" id="res-name" class="form-input" placeholder="e.g. Rohith Kumar" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="res-phone">Phone Number</label>
+            <input type="tel" id="res-phone" class="form-input" placeholder="e.g. 9876543210" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="res-date">Date</label>
+            <input type="date" id="res-date" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="res-time">Time Slot</label>
+            <select id="res-time" class="form-select" required>
+              <option value="07:00 PM">07:00 PM (Dinner Slot)</option>
+              <option value="08:00 PM">08:00 PM (Prime Evening)</option>
+              <option value="09:00 PM">09:00 PM (Atmosphere Slot)</option>
+              <option value="10:00 PM">10:00 PM (Late Night Feast)</option>
+              <option value="11:00 PM">11:00 PM (Midnight Cravings)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="res-guests">Number of Guests</label>
+          <select id="res-guests" class="form-select">
+            <option value="2">2 Persons (Couple / Cozy Table)</option>
+            <option value="4">4 Persons (Squad Booth)</option>
+            <option value="6">6 Persons (Feast Group)</option>
+            <option value="8+">8+ Persons (Party Lounge)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="res-notes">Special Requests (Optional)</label>
+          <input type="text" id="res-notes" class="form-input" placeholder="e.g. Birthday celebration, extra spicy preference">
+        </div>
+
+        <button type="submit" class="btn-whatsapp-checkout" style="margin-top: 1rem;">
+          <!-- Authentic WhatsApp Icon -->
+          <svg class="wa-svg-icon" viewBox="0 0 32 32" width="20" height="20">
+            <path fill="#25D366" d="M16 2.5C8.544 2.5 2.5 8.544 2.5 16c0 2.457.653 4.764 1.796 6.757L2.5 29.5l7.003-1.745A13.435 13.435 0 0 0 16 29.5c7.456 0 13.5-6.044 13.5-13.5S23.456 2.5 16 2.5z"/>
+            <path fill="#FFFFFF" d="M21.78 19.344c-.313-.156-1.85-.913-2.138-1.018-.287-.104-.496-.156-.704.156-.209.313-.809 1.018-.992 1.227-.183.209-.365.235-.678.078-.313-.156-1.32-.486-2.515-1.552-.93-.83-1.558-1.854-1.741-2.167-.183-.313-.02-.482.137-.638.141-.14.313-.365.47-.548.156-.183.209-.313.313-.522.104-.209.052-.391-.026-.548-.078-.156-.704-1.7-.965-2.327-.253-.61-.51-.527-.704-.536-.182-.01-.391-.01-.6-.01-.209 0-.548.078-.835.391-.287.313-1.096 1.072-1.096 2.614 0 1.542 1.122 3.032 1.278 3.241.156.209 2.209 3.374 5.352 4.733.748.323 1.332.517 1.787.662.751.24 1.435.206 1.975.125.602-.09 1.85-.757 2.112-1.488.261-.73.261-1.356.183-1.488-.078-.131-.287-.209-.6-.365z"/>
+          </svg>
+          Confirm Reservation on WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       9. REAL AUTHENTIC FLOATING WHATSAPP CHAT BUTTON (NO OVERLAP)
+       ========================================================================== -->
+  <div class="floating-whatsapp-widget" id="floating-whatsapp-widget">
+    <div class="wa-prompt-bubble">
+      <span>Need help? Chat with us</span>
+    </div>
+    <a href="https://wa.me/919876543210" id="floating-wa-btn" class="wa-floating-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat with Street Kitchen on WhatsApp">
+      <!-- Authentic Official 3D-styled WhatsApp Badge -->
+      <svg viewBox="0 0 32 32" width="36" height="36">
+        <path fill="#25D366" d="M16 2.5C8.544 2.5 2.5 8.544 2.5 16c0 2.457.653 4.764 1.796 6.757L2.5 29.5l7.003-1.745A13.435 13.435 0 0 0 16 29.5c7.456 0 13.5-6.044 13.5-13.5S23.456 2.5 16 2.5z"/>
+        <path fill="#FFFFFF" d="M21.78 19.344c-.313-.156-1.85-.913-2.138-1.018-.287-.104-.496-.156-.704.156-.209.313-.809 1.018-.992 1.227-.183.209-.365.235-.678.078-.313-.156-1.32-.486-2.515-1.552-.93-.83-1.558-1.854-1.741-2.167-.183-.313-.02-.482.137-.638.141-.14.313-.365.47-.548.156-.183.209-.313.313-.522.104-.209.052-.391-.026-.548-.078-.156-.704-1.7-.965-2.327-.253-.61-.51-.527-.704-.536-.182-.01-.391-.01-.6-.01-.209 0-.548.078-.835.391-.287.313-1.096 1.072-1.096 2.614 0 1.542 1.122 3.032 1.278 3.241.156.209 2.209 3.374 5.352 4.733.748.323 1.332.517 1.787.662.751.24 1.435.206 1.975.125.602-.09 1.85-.757 2.112-1.488.261-.73.261-1.356.183-1.488-.078-.131-.287-.209-.6-.365z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- ==========================================================================
+       10. FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-text-group">
+          <span class="footer-brand-title">Street Kitchen</span>
+          <span class="footer-brand-tagline">try it you'll like it</span>
+        </div>
+        <p>
+          Forged over live charcoal coals in Kolathur, Chennai. Serving irresistible shawarmas, smashed gourmet burgers, fiery wings, and late-night feasts.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore Menu</h4>
+        <ul>
+          <li><a href="#menu">Smoked Shawarmas</a></li>
+          <li><a href="#menu">Charcoal BBQ Grills</a></li>
+          <li><a href="#menu">Midnight Smash Burgers</a></li>
+          <li><a href="#menu">Wok Hei Szechuan</a></li>
+          <li><a href="#menu">Artisan Shakes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Experience</h4>
+        <ul>
+          <li><a href="#story">Live Kitchen Concept</a></li>
+          <li><a href="#story">Secret Spices</a></li>
+          <li><a href="#" class="open-reservation-btn">Reserve a VIP Table</a></li>
+          <li><a href="#location">Directions & Map</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Visit Kolathur</h4>
+        <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem;">
+          200 Feet Radial Road / Kolathur Main Rd, Chennai, Tamil Nadu 600099
+        </p>
+        <p style="color: var(--primary-amber); font-weight: 700; font-size: 0.95rem;">
+          Open Daily: 12:00 PM – 12:30 AM
+        </p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 Street Kitchen Restaurant. All Rights Reserved.</div>
+      <div>Crafted for Ultimate Dark Ambience & 3D Interactive Dining</div>
+    </div>
+  </footer>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Leaflet Maps CDN -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Core Logic -->
+  <script src="js/menu-data.js"></script>
+  <script src="js/three-scene.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
