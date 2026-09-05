@@ -559,7 +559,7 @@ function initIntroLogoReveal() {
     setTimeout(() => overlay.remove(), 650);
   };
 
-  logoImage.src = 'Logo.png';
+  logoImage.src = 'logo.png';
 
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
