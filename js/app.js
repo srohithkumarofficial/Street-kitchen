@@ -4,8 +4,10 @@
 let threeSceneInstance = null;
 let cart = [];
 let currentCategory = 'all';
+let revealObserver = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+  initIntroLogoReveal();
   initThreeHero();
   initHeaderScroll();
   initMobileDrawer();
@@ -16,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLeafletMap();
   initFloatingTrayBar();
   initScrollReveal();
+  initPageMotion();
 });
 
 /* ==========================================================================
@@ -112,8 +115,8 @@ function renderMenu(category = 'all') {
     ? MENU_DATA 
     : MENU_DATA.filter(item => item.category === category);
 
-  grid.innerHTML = items.map(item => `
-    <article class="dish-card-wrapper scroll-reveal visible" data-id="${item.id}">
+  grid.innerHTML = items.map((item, index) => `
+    <article class="dish-card-wrapper scroll-reveal" data-id="${item.id}" style="--reveal-delay: ${Math.min(index * 45, 360)}ms">
       <div class="card-image-wrap">
         <img src="${item.image}" alt="${item.name}" loading="lazy">
         <div class="card-image-overlay"></div>
@@ -148,6 +151,8 @@ function renderMenu(category = 'all') {
       </div>
     </article>
   `).join('');
+
+  observeRevealElements(grid.querySelectorAll('.scroll-reveal'));
 }
 
 function initCategoryFilters() {
@@ -360,15 +365,292 @@ function showToast(message) {
    ========================================================================== */
 function initScrollReveal() {
   const elements = document.querySelectorAll('.scroll-reveal');
-  const observer = new IntersectionObserver((entries) => {
+  revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
 
-  elements.forEach(el => observer.observe(el));
+  observeRevealElements(elements);
+}
+
+function observeRevealElements(elements) {
+  if (!revealObserver) return;
+  elements.forEach((el, index) => {
+    if (!el.style.getPropertyValue('--reveal-delay')) {
+      el.style.setProperty('--reveal-delay', `${Math.min(index * 55, 420)}ms`);
+    }
+    revealObserver.observe(el);
+  });
+}
+
+function initPageMotion() {
+  document.querySelectorAll('.hero-content > *, .hero-3d-stage, .footer-grid > *, .loc-meta-item').forEach((el, index) => {
+    el.classList.add('scroll-reveal');
+    el.style.setProperty('--reveal-delay', `${Math.min(index * 70, 420)}ms`);
+  });
+  observeRevealElements(document.querySelectorAll('.hero-content > *, .hero-3d-stage, .footer-grid > *, .loc-meta-item'));
+}
+
+/* ==========================================================================
+   0. CINEMATIC PARTICLE LOGO REVEAL
+   ========================================================================== */
+function initIntroLogoReveal() {
+  const overlay = document.getElementById('intro-logo-reveal');
+  const mount = document.getElementById('intro-canvas-wrap');
+  const finalLogo = document.getElementById('intro-logo-final');
+
+  if (!overlay || !mount || typeof THREE === 'undefined') {
+    document.body.classList.remove('intro-active');
+    if (overlay) overlay.remove();
+    return;
+  }
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reducedMotion) {
+    overlay.classList.add('intro-skip');
+    document.body.classList.remove('intro-active');
+    setTimeout(() => overlay.remove(), 450);
+    return;
+  }
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+  const clock = new THREE.Clock();
+  const logoImage = new Image();
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+  mount.appendChild(renderer.domElement);
+
+  camera.position.set(0, 0.04, 8.9);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+
+  const warmLight = new THREE.PointLight(0xffc46b, 1.7, 16);
+  warmLight.position.set(2.4, 1.8, 4);
+  scene.add(warmLight);
+
+  const rimLight = new THREE.PointLight(0xe63946, 1.2, 14);
+  rimLight.position.set(-3, -1.2, 3.2);
+  scene.add(rimLight);
+
+  logoImage.onload = () => {
+    const particleData = sampleLogoParticles(logoImage);
+    const geometry = new THREE.BufferGeometry();
+    const startPositions = new Float32Array(particleData.count * 3);
+    const targetPositions = new Float32Array(particleData.count * 3);
+    const currentPositions = new Float32Array(particleData.count * 3);
+    const colors = new Float32Array(particleData.count * 3);
+    const baseColors = new Float32Array(particleData.count * 3);
+
+    for (let i = 0; i < particleData.count; i++) {
+      const spread = window.innerWidth < 720 ? 5.4 : 7.4;
+      startPositions[i * 3] = (Math.random() - 0.5) * spread;
+      startPositions[i * 3 + 1] = (Math.random() - 0.5) * spread * 1.2;
+      startPositions[i * 3 + 2] = (Math.random() - 0.5) * 7.8 - 1.4;
+
+      targetPositions[i * 3] = particleData.positions[i * 3];
+      targetPositions[i * 3 + 1] = particleData.positions[i * 3 + 1];
+      targetPositions[i * 3 + 2] = particleData.positions[i * 3 + 2];
+
+      currentPositions.set(startPositions.slice(i * 3, i * 3 + 3), i * 3);
+      baseColors.set(particleData.colors.slice(i * 3, i * 3 + 3), i * 3);
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(currentPositions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: window.innerWidth < 720 ? 0.042 : 0.034,
+      transparent: true,
+      opacity: 0.92,
+      vertexColors: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      map: createParticleTexture()
+    });
+
+    const points = new THREE.Points(geometry, material);
+    points.rotation.set(0.12, -0.18, 0);
+    scene.add(points);
+
+    let frame = 1;
+    const totalFrames = 180;
+    const finalLogoHoldMs = 1400;
+
+    const finishIntro = () => {
+      overlay.classList.add('intro-done');
+      document.body.classList.remove('intro-active');
+      setTimeout(() => {
+        renderer.dispose();
+        geometry.dispose();
+        material.dispose();
+        overlay.remove();
+      }, 1900);
+    };
+
+    const animate = () => {
+      const elapsed = clock.getElapsedTime();
+      const progress = Math.min(frame / totalFrames, 1);
+      const gather = easeInOutCubic(clamp01((progress - 0.42) / 0.36));
+      const settle = easeOutCubic(clamp01((progress - 0.72) / 0.14));
+      const push = easeInOutCubic(clamp01((progress - 0.80) / 0.18));
+      const shimmer = clamp01((progress - 0.90) / 0.10);
+      const positions = geometry.attributes.position.array;
+
+      for (let i = 0; i < particleData.count; i++) {
+        const i3 = i * 3;
+        const earlyVisible = i % 29 === 0 || i % 43 === 0;
+        const arrivalDelay = ((i * 17) % 100) / 100 * 0.22;
+        const assemble = easeInOutCubic(clamp01((progress - 0.42 - arrivalDelay) / 0.34));
+        const particleGlow = Math.max(earlyVisible ? 0.42 : 0, clamp01((progress - 0.28 - arrivalDelay) / 0.42));
+        const drift = Math.sin(elapsed * 0.42 + i * 0.21) * (1 - assemble) * 0.12;
+        const floatX = Math.sin(elapsed * 0.3 + i * 0.09) * (1 - gather) * 0.05;
+        const floatY = Math.cos(elapsed * 0.28 + i * 0.07) * (1 - gather) * 0.045;
+        const depthSettle = targetPositions[i3 + 2] + Math.sin(i * 0.13) * 0.08 * (1 - settle);
+        positions[i3] = THREE.MathUtils.lerp(startPositions[i3] + drift + floatX, targetPositions[i3], assemble);
+        positions[i3 + 1] = THREE.MathUtils.lerp(startPositions[i3 + 1] - drift + floatY, targetPositions[i3 + 1], assemble);
+        positions[i3 + 2] = THREE.MathUtils.lerp(startPositions[i3 + 2], depthSettle, assemble);
+
+        colors[i3] = baseColors[i3] * particleGlow;
+        colors[i3 + 1] = baseColors[i3 + 1] * particleGlow;
+        colors[i3 + 2] = baseColors[i3 + 2] * particleGlow;
+      }
+
+      geometry.attributes.position.needsUpdate = true;
+      geometry.attributes.color.needsUpdate = true;
+      points.rotation.y = THREE.MathUtils.lerp(-0.24, 0.035, gather) + Math.sin(elapsed * 0.22) * 0.018;
+      points.rotation.x = THREE.MathUtils.lerp(0.16, 0, gather);
+      points.scale.setScalar(THREE.MathUtils.lerp(0.9, 1.12, push));
+      material.opacity = THREE.MathUtils.lerp(0.92, 0.2, shimmer);
+      camera.position.z = THREE.MathUtils.lerp(8.9, 7.55, easeInOutCubic(clamp01(progress / 0.72)));
+      camera.position.z = THREE.MathUtils.lerp(camera.position.z, 5.95, push);
+      camera.position.x = Math.sin(elapsed * 0.18) * 0.16 * (1 - push);
+      camera.position.y = 0.04 + Math.cos(elapsed * 0.16) * 0.055 * (1 - push);
+      camera.lookAt(0, 0.02, 0);
+
+      if (progress > 0.78) finalLogo.classList.add('visible');
+      if (progress > 0.91) finalLogo.classList.add('edge-lit');
+
+      renderer.render(scene, camera);
+
+      if (frame < totalFrames) {
+        frame += 1;
+        requestAnimationFrame(animate);
+      } else {
+        overlay.classList.add('intro-hold');
+        setTimeout(finishIntro, finalLogoHoldMs);
+      }
+    };
+
+    animate();
+  };
+
+  logoImage.onerror = () => {
+    document.body.classList.remove('intro-active');
+    overlay.classList.add('intro-done');
+    setTimeout(() => overlay.remove(), 650);
+  };
+
+  logoImage.src = 'Logo.png';
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }, { passive: true });
+}
+
+function sampleLogoParticles(image) {
+  const size = 180;
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const isMobile = window.innerWidth < 720;
+  const maxParticles = isMobile ? 820 : 1280;
+  const scale = isMobile ? 3.7 : 4.35;
+
+  canvas.width = size;
+  canvas.height = size;
+  ctx.drawImage(image, 0, 0, size, size);
+
+  const pixels = ctx.getImageData(0, 0, size, size).data;
+  const candidates = [];
+
+  for (let y = 4; y < size - 4; y += 3) {
+    for (let x = 4; x < size - 4; x += 3) {
+      const idx = (y * size + x) * 4;
+      const r = pixels[idx];
+      const g = pixels[idx + 1];
+      const b = pixels[idx + 2];
+      const a = pixels[idx + 3];
+      const brightness = (r + g + b) / 3;
+      const redSignal = r > 95 && r > g * 1.16 && r > b * 1.16;
+      const lightSignal = brightness > 88;
+
+      if (a > 40 && (redSignal || lightSignal)) {
+        candidates.push({ x, y, r, g, b, redSignal });
+      }
+    }
+  }
+
+  candidates.sort(() => Math.random() - 0.5);
+  const selected = candidates.slice(0, maxParticles);
+  const positions = new Float32Array(selected.length * 3);
+  const colors = new Float32Array(selected.length * 3);
+
+  selected.forEach((point, i) => {
+    const i3 = i * 3;
+    positions[i3] = ((point.x / size) - 0.5) * scale;
+    positions[i3 + 1] = (0.5 - (point.y / size)) * scale;
+    positions[i3 + 2] = (Math.random() - 0.5) * 0.42;
+
+    if (point.redSignal) {
+      colors[i3] = 1;
+      colors[i3 + 1] = 0.16 + Math.random() * 0.08;
+      colors[i3 + 2] = 0.08;
+    } else {
+      colors[i3] = 1;
+      colors[i3 + 1] = 0.9 + Math.random() * 0.1;
+      colors[i3 + 2] = 0.74 + Math.random() * 0.18;
+    }
+  });
+
+  return { count: selected.length, positions, colors };
+}
+
+function createParticleTexture() {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 64;
+  canvas.height = 64;
+
+  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gradient.addColorStop(0, 'rgba(255,255,255,1)');
+  gradient.addColorStop(0.35, 'rgba(255,255,255,0.75)');
+  gradient.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 64, 64);
+
+  return new THREE.CanvasTexture(canvas);
+}
+
+function clamp01(value) {
+  return Math.max(0, Math.min(1, value));
+}
+
+function easeInOutCubic(value) {
+  return value < 0.5 ? 4 * value * value * value : 1 - Math.pow(-2 * value + 2, 3) / 2;
+}
+
+function easeOutCubic(value) {
+  return 1 - Math.pow(1 - value, 3);
 }
 
 /* ==========================================================================
