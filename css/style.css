@@ -2249,3 +2249,339 @@ section {
   }
 
 }
+
+/* Final responsive pass: keep the shared chrome and every content surface
+   usable between narrow phones and small tablets. */
+@media (max-width: 1100px) {
+  .site-header {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .desktop-nav,
+  .desktop-cta {
+    display: none;
+  }
+
+  .mobile-hamburger-btn {
+    display: flex;
+  }
+
+  .nav-actions {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header,
+  .site-header.scrolled {
+    padding: 0.7rem 0.85rem;
+  }
+
+  .nav-container {
+    gap: 0.65rem;
+  }
+
+  .logo-link {
+    min-width: 0;
+    gap: 0.55rem;
+  }
+
+  .logo-badge-img {
+    width: 39px;
+    height: 39px;
+  }
+
+  .brand-title {
+    font-size: 1.45rem;
+    letter-spacing: 1.2px;
+  }
+
+  .brand-tagline {
+    font-size: 0.58rem;
+    letter-spacing: 0.6px;
+  }
+
+  .nav-actions {
+    gap: 0.45rem;
+  }
+
+  .cart-toggle-btn {
+    padding: 0.48rem 0.65rem;
+  }
+
+  .cart-label {
+    display: none;
+  }
+
+  .mobile-hamburger-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .mobile-menu-drawer {
+    width: min(88vw, 360px);
+    padding: 1.25rem;
+  }
+
+  .drawer-header .brand-title {
+    font-size: 1.35rem;
+  }
+
+  .hero-section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .hero-headline {
+    font-size: clamp(2.65rem, 13vw, 3.5rem);
+  }
+
+  .hero-description {
+    max-width: 34rem;
+    font-size: 0.94rem;
+  }
+
+  .hero-cta-group {
+    width: 100%;
+    gap: 0.7rem;
+  }
+
+  .hero-cta-group > * {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .hero-highlights-strip {
+    gap: 0.45rem;
+  }
+
+  section {
+    padding: 3.25rem 1rem;
+  }
+
+  .section-header-center {
+    margin-bottom: 2.25rem;
+  }
+
+  .section-title {
+    font-size: clamp(2.25rem, 11vw, 3.25rem);
+  }
+
+  .section-desc {
+    font-size: 0.92rem;
+  }
+
+  .menu-controls {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0.15rem 0.1rem 0.7rem;
+    margin-right: -1rem;
+    scrollbar-width: none;
+  }
+
+  .menu-controls::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-filter-btn {
+    flex: 0 0 auto;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.8rem;
+  }
+
+  .menu-cards-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .dish-card-wrapper {
+    border-radius: 18px;
+  }
+
+  .card-body {
+    padding: 1.1rem;
+  }
+
+  .features-grid,
+  .testimonials-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .feature-box-glass,
+  .testimonial-card {
+    padding: 1.5rem;
+    border-radius: 18px;
+  }
+
+  .location-wrapper {
+    border-radius: 20px;
+  }
+
+  .map-container-wrap,
+  #leaflet-map {
+    min-height: 280px;
+  }
+
+  .location-info-panel {
+    padding: 1.5rem 1.1rem;
+  }
+
+  .location-info-panel h3 {
+    font-size: 2rem;
+  }
+
+  .location-actions-group {
+    flex-direction: column;
+  }
+
+  .location-actions-group > * {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .floating-tray-bottom-bar {
+    padding: 0.7rem 0.85rem;
+  }
+
+  .tray-bar-content {
+    gap: 0.65rem;
+  }
+
+  .tray-bar-info {
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+  }
+
+  .tray-bar-total {
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  .tray-bar-total span {
+    font-size: 1rem;
+  }
+
+  .btn-tray-view-checkout {
+    flex: 0 0 auto;
+    padding: 0.65rem 0.8rem;
+    font-size: 0.78rem;
+  }
+
+  .cart-drawer {
+    max-width: 100%;
+  }
+
+  .cart-drawer-header,
+  .cart-items-container,
+  .cart-drawer-footer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .reservation-modal-backdrop {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 0.75rem;
+    width: 100%;
+  }
+
+  .reservation-card-modal {
+    width: 100%;
+    max-width: calc(100vw - 1.5rem);
+    max-height: calc(100svh - 1.5rem);
+    overflow-y: auto;
+    border-radius: 20px;
+    padding: 3rem 1rem 1.25rem;
+  }
+
+  .reservation-card-modal > div:first-of-type {
+    margin-bottom: 1.25rem !important;
+  }
+
+  .reservation-card-modal > div:first-of-type h3 {
+    font-size: 1.9rem !important;
+    line-height: 1.05;
+  }
+
+  .reservation-card-modal > div:first-of-type p {
+    font-size: 0.8rem !important;
+    line-height: 1.45;
+    padding: 0 1rem;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .form-input,
+  .form-select {
+    min-height: 46px;
+    font-size: 16px;
+  }
+
+  .reservation-card-modal .btn-whatsapp-checkout {
+    font-size: 0.86rem;
+    line-height: 1.25;
+    padding: 0.85rem 0.7rem;
+  }
+
+  .site-footer {
+    padding: 3rem 1rem 1.5rem;
+  }
+
+  .footer-grid {
+    gap: 1.75rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .footer-bottom {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .brand-title {
+    font-size: 1.25rem;
+  }
+
+  .brand-tagline {
+    display: none;
+  }
+
+  .hero-highlights-strip {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .highlight-stat-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .highlight-stat-item h3 {
+    font-size: 1.55rem;
+  }
+
+  .highlight-stat-item p {
+    text-align: right;
+  }
+
+  .tray-bar-badge {
+    font-size: 0.68rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .btn-tray-view-checkout span {
+    max-width: 94px;
+    white-space: normal;
+    text-align: left;
+  }
+}
